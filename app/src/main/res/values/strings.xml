@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TechForumDemo</string>
+    <string name="app_name">Tech Forum Demo</string>
     <string name="title_riddle">Riddle</string>
     <string name="title_trivia">Trivia</string>
     <string name="fragtitle_trivia">Office Trivia</string>

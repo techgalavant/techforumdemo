@@ -1,16 +1,16 @@
-package com.techgalavant.techforumdemo.ui.notifications;
+package com.techgalavant.techforumdemo.ui.riddle;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class RiddleViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public RiddleViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is the notifications fragment. It will be used to show Today's Sponsor.");
+        mText.setValue("This is the fragment to show Today's Riddle.");
     }
 
     public LiveData<String> getText() {

@@ -1,10 +1,10 @@
 package com.techgalavant.techforumdemo;
 
-/**
- * Created by Mike Fallon
- *
- * This is a utility for configuration of the Firebase features - Database and Remote Config.
- *
+/*
+  Created by Mike Fallon
+
+  This is a utility for getting an instance of the Firebase features - Database and Remote Config.
+
  */
 
 import com.google.firebase.database.FirebaseDatabase;

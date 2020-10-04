@@ -1,7 +1,6 @@
-package com.techgalavant.techforumdemo.ui.notifications;
+package com.techgalavant.techforumdemo.ui.riddle;
 
-// This fragment will be used as to show the Sponsor using Google Firebase Remote Configuration.
-
+// This fragment will be used to show a riddle using In-App Messaging.
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,9 +16,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.techgalavant.techforumdemo.R;
-import com.techgalavant.techforumdemo.ui.trivia.TriviaFragment;
 
-public class NotificationsFragment extends Fragment {
+
+public class RiddleFragment extends Fragment {
 
     // used for logging events in Google Analytics
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -29,24 +28,27 @@ public class NotificationsFragment extends Fragment {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
 
-    // TODO Setup logEvent() to log Sponsor actions into Google Firebase Analytics.
+    // TODO Setup logEvent() to log Riddle actions into Google Firebase Analytics.
 
-    private static final String TAG = NotificationsFragment.class.getSimpleName();
+    private static final String TAG = RiddleFragment.class.getSimpleName();
 
-    private NotificationsViewModel notificationsViewModel;
+    private RiddleViewModel riddleViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        riddleViewModel =
+                ViewModelProviders.of(this).get(RiddleViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_riddle, container, false);
+        final TextView textView = root.findViewById(R.id.text_riddle);
+        riddleViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
         return root;
+
     }
+
 }
