@@ -1,4 +1,4 @@
-package com.example.techforumdemo.ui.dashboard;
+package com.techgalavant.techforumdemo.ui.dashboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.techforumdemo.R;
+import com.techgalavant.techforumdemo.R;
 
 public class DashboardFragment extends Fragment {
 

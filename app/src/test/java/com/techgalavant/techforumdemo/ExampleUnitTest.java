@@ -1,4 +1,4 @@
-package com.example.techforumdemo;
+package com.techgalavant.techforumdemo;
 
 import org.junit.Test;
 
