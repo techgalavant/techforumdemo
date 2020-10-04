@@ -17,9 +17,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.techgalavant.techforumdemo.ui.dashboard.DashboardFragment"
+        android:name="com.techgalavant.techforumdemo.ui.trivia.TriviaFragment"
         android:label="@string/title_trivia"
-        tools:layout="@layout/fragment_dashboard">
+        tools:layout="@layout/fragment_trivia">
         <action
             android:id="@+id/action_navigation_dashboard_to_navigation_notifications"
             app:destination="@id/navigation_notifications" />

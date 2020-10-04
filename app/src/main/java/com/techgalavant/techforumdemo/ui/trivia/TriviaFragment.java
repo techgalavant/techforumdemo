@@ -1,6 +1,6 @@
-package com.techgalavant.techforumdemo.ui.notifications;
+package com.techgalavant.techforumdemo.ui.trivia;
 
-// This fragment will be used as to show the Sponsor using Google Firebase Remote Configuration.
+// This fragment will be used to show the Office Trivia from the Google Firebase Realtime Database
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,9 +17,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.techgalavant.techforumdemo.R;
-import com.techgalavant.techforumdemo.ui.trivia.TriviaFragment;
 
-public class NotificationsFragment extends Fragment {
+public class TriviaFragment extends Fragment {
 
     // used for logging events in Google Analytics
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -28,20 +27,19 @@ public class NotificationsFragment extends Fragment {
         super.onAttach(context);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
+    // TODO Setup logEvent() to log Office Trivia actions into Google Firebase Analytics.
 
-    // TODO Setup logEvent() to log Sponsor actions into Google Firebase Analytics.
+    private static final String TAG = TriviaFragment.class.getSimpleName();
 
-    private static final String TAG = NotificationsFragment.class.getSimpleName();
-
-    private NotificationsViewModel notificationsViewModel;
+    private TriviaViewModel triviaViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        triviaViewModel =
+                ViewModelProviders.of(this).get(TriviaViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_trivia, container, false);
+        final TextView textView = root.findViewById(R.id.title_trivia);  // TODO Add in the other TextViews
+        triviaViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

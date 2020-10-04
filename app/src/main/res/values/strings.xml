@@ -2,5 +2,12 @@
     <string name="app_name">TechForumDemo</string>
     <string name="title_riddle">Riddle</string>
     <string name="title_trivia">Trivia</string>
+    <string name="fragtitle_trivia">Office Trivia</string>
+    <string name="fragtitle_riddle">Today\'s Riddle</string>
+    <string name="fragtitle_sponsor">Our Sponsor</string>
+    <string name="trivia_q">Question:</string>
+    <string name="trivia_a">Answer:</string>
+    <string name="trivia_next">NEXT</string>
     <string name="title_sponsor">Sponsor</string>
+    <string name="sponsor_thanks">Thank you to our sponsor!</string>
 </resources>

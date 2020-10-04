@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.trivia.TriviaFragment">
+
+    <TextView
+        android:id="@+id/title_trivia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="3dp"
+        android:paddingTop="5dp"
+        android:text="@string/fragtitle_trivia"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="58dp" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trivia_q"
+        android:textSize="22sp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/title_trivia"
+        android:background="@color/colorQuestion"
+        android:paddingBottom="2dp"
+        android:padding="5dp"
+        android:layout_margin="5dp"/>
+
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trivia_a"
+        android:textSize="22sp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/question"
+        android:background="@color/colorAnswer"
+        android:paddingBottom="2dp" />
+
+    <TextView
+        android:id="@+id/next_q"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/trivia_next"
+        android:paddingTop="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="3dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/answer"
+        android:hint="@string/trivia_next"
+        android:textSize="20sp"/>
+    </RelativeLayout>
+
+</ScrollView>
