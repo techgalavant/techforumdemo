@@ -1,5 +1,7 @@
 package com.techgalavant.techforumdemo.ui.trivia;
 
+import com.techgalavant.techforumdemo.R;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +12,7 @@ public class TriviaViewModel extends ViewModel {
 
     public TriviaViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is the trivia fragment. It will be used to show the Office Trivia.");
+        mText.setValue("Office Trivia");
     }
 
     public LiveData<String> getText() {

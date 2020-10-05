@@ -10,7 +10,7 @@ public class SponsorViewModel extends ViewModel {
 
     public SponsorViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is the sponsor fragment. It will be used to show Today's Sponsor.");
+        mText.setValue("Today's Sponsor");
     }
 
     public LiveData<String> getText() {

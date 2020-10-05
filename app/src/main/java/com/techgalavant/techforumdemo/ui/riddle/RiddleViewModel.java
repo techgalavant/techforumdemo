@@ -10,7 +10,7 @@ public class RiddleViewModel extends ViewModel {
 
     public RiddleViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is the fragment to show Today's Riddle.");
+        mText.setValue("Today's Riddle");
     }
 
     public LiveData<String> getText() {
