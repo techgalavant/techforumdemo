@@ -16,6 +16,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.techgalavant.techforumdemo.R;
 
 public class SponsorFragment extends Fragment {
@@ -32,10 +34,29 @@ public class SponsorFragment extends Fragment {
 
     private static final String TAG = SponsorFragment.class.getSimpleName();
 
+    // The following are related to the Firebase Remote Config
+    private FirebaseRemoteConfig mRemoteConfig;
+
     private SponsorViewModel sponsorViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        // See remote config example here: https://github.com/firebase/quickstart-android/blob/adb735b2abbd00e61ed387751e2d91cd7f22a3c5/config/app/src/main/java/com/google/samples/quickstart/config/java/MainActivity.java#L76-L79
+
+        mRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+        // Enable developer mode is deprecated so have to use config settings
+        // [START enable_dev_mode]
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(10)
+                .build();
+        mRemoteConfig.setConfigSettingsAsync(configSettings);
+        // [END enable_dev_mode]
+
+        // use defaults if can't reach service
+        mRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+
         sponsorViewModel =
                 ViewModelProviders.of(this).get(SponsorViewModel.class);
         View root = inflater.inflate(R.layout.fragment_sponsor, container, false);

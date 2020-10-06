@@ -1,12 +1,15 @@
 package com.techgalavant.techforumdemo.ui.trivia;
 
-// This fragment will be used to show the Office Trivia from the Google Firebase Realtime Database
+// This fragment demonstrates Crashlytics. When the user presses a button, it will force a crash and log events in Firebase.
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.techgalavant.techforumdemo.R;
 
 public class TriviaFragment extends Fragment {
@@ -44,7 +48,25 @@ public class TriviaFragment extends Fragment {
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
+
         });
-        return root;
+
+        //Demo Crashlytics - when the user presses the button, crash the app and log an event in Firebase
+
+        final Button button = root.findViewById(R.id.next_q);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //Intent nextIntent = new Intent();
+                //startActivity(nextIntent);
+                // See: https://firebase.google.com/docs/crashlytics/customize-crash-reports?platform=android for different ways to add keys
+                FirebaseCrashlytics.getInstance().setCustomKey("str_key", "hello");
+                FirebaseCrashlytics.getInstance().log("User hit NEXT button - to test a forced crash");
+                throw new RuntimeException("Trivia Test Crash"); // force a crash for crashlytics when user presses Next button
+                //Log.e(TAG,"User selected button");
+
+            }
+
+        });
+                return root;
     }
 }

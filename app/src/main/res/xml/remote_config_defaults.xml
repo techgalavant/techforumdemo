@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>sponsor</key>
+        <value>https://www.ecspan.com/techforumdemo/homesite_sp.png</value>
+    </entry>
+
+</defaultsMap>
+    <!-- END xml_defaults -->
