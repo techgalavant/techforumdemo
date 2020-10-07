@@ -71,6 +71,29 @@
             android:textSize="25sp"
             android:textStyle="normal|bold" />
 
+        <Button
+            android:id="@+id/last_q"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/next_q"
+            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dp"
+            android:background="#778FEC"
+            android:fontFamily="casual"
+            android:gravity="center_horizontal"
+            android:hint="@string/trivia_last"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="3dp"
+            android:text="@string/trivia_last"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:textStyle="normal|bold" />
+
+
     </RelativeLayout>
 
 </ScrollView>

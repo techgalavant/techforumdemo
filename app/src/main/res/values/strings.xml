@@ -8,6 +8,22 @@
     <string name="trivia_q">Question:</string>
     <string name="trivia_a">Answer:</string>
     <string name="trivia_next">NEXT</string>
+    <string name="trivia_last">LAST</string>
     <string name="title_sponsor">Sponsor</string>
     <string name="sponsor_thanks">Thank you to our sponsor!</string>
+    <string name="hermosa">chucknorrisrules</string>
+    <string name="riddle_q">RIDDLE…</string>
+    <string name="riddle_choice_1">Choice 1</string>
+    <string name="riddle_choice_2">Choice 2</string>
+    <string name="riddle_a">Fill in response…</string>
+    <string name="riddle_resp">RESPOND</string>
+    <string name="feedback_title">Submit New Riddle</string>
+    <string name="senders_name">Sender Name</string>
+    <string name="senders_riddle_q">Riddle Question</string>
+    <string name="senders_answer_1">Answer 1</string>
+    <string name="senders_answer_2">Answer 2</string>
+    <string name="send">Send</string>
+    <string name="update">Update</string>
+    <string name="feedback_thanks">Thank you for your submission!</string>
+    <string name="feedback_chg">Change Your Riddle?</string>
 </resources>

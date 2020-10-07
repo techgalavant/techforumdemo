@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +22,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.techgalavant.techforumdemo.R;
+import com.techgalavant.techforumdemo.ui.riddle.RiddleFragment;
 
 public class TriviaFragment extends Fragment {
 
     // used for logging events in Google Analytics
     private FirebaseAnalytics mFirebaseAnalytics;
+
+    int count;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -51,22 +56,65 @@ public class TriviaFragment extends Fragment {
 
         });
 
-        //Demo Crashlytics - when the user presses the button, crash the app and log an event in Firebase
+        //Demo Crashlytics - when the user presses the NEXT button, crash the app and log an event in Firebase
 
-        final Button button = root.findViewById(R.id.next_q);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button nextbtn = root.findViewById(R.id.next_q);
+
+        nextbtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //Intent nextIntent = new Intent();
-                //startActivity(nextIntent);
                 // See: https://firebase.google.com/docs/crashlytics/customize-crash-reports?platform=android for different ways to add keys
-                FirebaseCrashlytics.getInstance().setCustomKey("str_key", "hello");
+                FirebaseCrashlytics.getInstance().setCustomKey("str_key", "crash button");
                 FirebaseCrashlytics.getInstance().log("User hit NEXT button - to test a forced crash");
-                throw new RuntimeException("Trivia Test Crash"); // force a crash for crashlytics when user presses Next button
-                //Log.e(TAG,"User selected button");
+                Log.e(TAG,"User selected Next button");
+                throw new RuntimeException("Trivia Test Crash");
 
             }
 
         });
+
+        // Demo Firebase Analytics - count each time the person presses the LAST button
+
+        final Button lastbutton = root.findViewById(R.id.last_q);
+
+        lastbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                String name = getResources().getString(R.string.fragtitle_trivia);
+                String id = getResources().getString(R.string.title_trivia);
+                Intent lastIntent = new Intent(TriviaFragment.this.getActivity(), RiddleFragment.class);
+
+                Log.e(TAG, "User selected LAST button");
+
+
+                if(count < 1)
+                {
+                    count = 1;
+                    //first time clicked to do this
+                    Toast.makeText(getActivity(),"LAST button clicked for 1st time", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    count = count+1;
+                    //check how many times clicked and so on
+                    Toast.makeText(getActivity(),"LAST button click count = "+count, Toast.LENGTH_LONG).show();
+                }
+                Log.e(TAG, String.valueOf(count));
+
+                // Log some information in the Firebase Analytics on this fragment
+                Bundle params = new Bundle();
+                params.putString("title_frag", id);
+                params.putString("frag_title", name);
+                params.putString("last_btn_count", String.valueOf(count));
+                params.putInt("btn_last_count2", count);
+                mFirebaseAnalytics.logEvent("frag_info", params);
+                // END of logging
+
+                // startActivity(lastIntent);
+
+            }
+
+        });
+
+
                 return root;
     }
 }
