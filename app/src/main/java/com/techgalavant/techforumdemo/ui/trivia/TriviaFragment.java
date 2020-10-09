@@ -1,6 +1,15 @@
 package com.techgalavant.techforumdemo.ui.trivia;
 
-// This fragment demonstrates Crashlytics. When the user presses a button, it will force a crash and log events in Firebase.
+/**
+ * Created by Mike Fallon in October 2020 for the Tech Forum demo of Google Firebase.
+ *
+ * This fragment demonstrates Crashlytics. When the user presses a button, it will force a crash and log events in Firebase.
+ * It also demonstrates logging values as special paramters in Firebase Analytics.
+ *
+ * TODO read Office Trivia questions from Firebase Database. See example here - https://github.com/prakashpun/IsItTrue/blob/master/app/src/main/java/com/thinkinghats/isittrue/activity/GameActivity.java
+ *
+ */
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +45,7 @@ public class TriviaFragment extends Fragment {
         super.onAttach(context);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
-    // TODO Setup logEvent() to log Office Trivia actions into Google Firebase Analytics.
+
 
     private static final String TAG = TriviaFragment.class.getSimpleName();
 
@@ -47,7 +56,7 @@ public class TriviaFragment extends Fragment {
         triviaViewModel =
                 ViewModelProviders.of(this).get(TriviaViewModel.class);
         View root = inflater.inflate(R.layout.fragment_trivia, container, false);
-        final TextView textView = root.findViewById(R.id.title_trivia);  // TODO Add in the other TextViews
+        final TextView textView = root.findViewById(R.id.title_trivia);
         triviaViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -108,7 +117,6 @@ public class TriviaFragment extends Fragment {
                 mFirebaseAnalytics.logEvent("frag_info", params);
                 // END of logging
 
-                // startActivity(lastIntent);
 
             }
 

@@ -9,7 +9,7 @@ package com.techgalavant.techforumdemo;
 
 public class Words {
     public String Sender;
-    public String Contact;
+    public String Correct;
     public String Riddle;
     public String Answer1;
     public String Answer2;
@@ -20,9 +20,9 @@ public class Words {
 
     }
 
-    public Words(String Sender, String Contact, String Riddle, String Answer1, String Answer2) {
+    public Words(String Sender, String Correct, String Riddle, String Answer1, String Answer2) {
         this.Sender = Sender;
-        this.Contact = Contact;
+        this.Correct = Correct;
         this.Riddle = Riddle;
         this.Answer1 = Answer1;
         this.Answer2 = Answer2;

@@ -1,5 +1,23 @@
 package com.techgalavant.techforumdemo;
 
+
+ /**
+ * Created by Mike Fallon in October 2020 for the Homesite Tech Forum demo of Google Firebase.
+ *
+ * The app demonstrates various Google Firebase features including Remote Config, Firebase Realtime Database,
+ * Firebase Analytics, Crashlytics, In-App messaging, Push Notification (Cloud Messaging) and Storage (accessing
+ * the image file and displaying it with Picasso).
+ *
+ * Other cool features - users will be able to shake their device to suggest a new riddle. If the user
+ * identifies as the 'hermosa' string value, then it will display that updated riddle on the screen.
+  *
+  * MyFirebaseMessagingService.java is for the push notifications, to obtain the device token. It's probably optional.
+ *
+  * Credits and inspiration to:
+  *  Device Shake Listener credit to http://jasonmcreynolds.com/?p=388
+  *
+ */
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,15 +25,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.techgalavant.techforumdemo.ui.riddle.RiddleFragment;
-import com.techgalavant.techforumdemo.ui.trivia.TriviaFragment;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // The user can also shake the device to send a message
-        // Device Shake Listener credit to http://jasonmcreynolds.com/?p=388
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -92,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-// ((Dialog) dialog).isShowing()
                         // Launch riddle form - SendFeedback.class
                         final Intent intent = new Intent(MainActivity.this, SendFeedback.class);
                         startActivity(intent);

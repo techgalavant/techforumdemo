@@ -1,27 +1,35 @@
 package com.techgalavant.techforumdemo;
 
-/** Created by Mike Fallon.
+/** Created by Mike Fallon and updated in October 2020 for use in the Tech Forum demo.
  *
- * The purpose of SendFeedback is to generate a riddle manually, store it in Firebase and
- * retrieve the response if the hermosa value matches the sender.
- * The riddle will then be displayed on the RiddleFragment.
+ * The purpose of SendFeedback is to allow a user to submit a new riddle which will
+ * get stored in the Firebase DB. If the user identifies themselves with the 'hermosa' value,
+ * then that will be the key used for displaying the riddle on RiddleFragment.
+ *
+ * This also demonstrates Firebase Analytics, storing the sender's name and time submitted.
  *
  * Credits to:
  * - Firebase DB tutorial - https://www.simplifiedcoding.net/firebase-realtime-database-example-android-application/
- * - Crazy Madlibs App on GitHub (my other app!) - https://github.com/techgalavant/madlibs
+ *
  */
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,18 +49,20 @@ import static com.techgalavant.techforumdemo.R.id.word4;
 
 public class SendFeedback extends AppCompatActivity {
 
+    // used for logging events in Google Analytics - send the submitter's name and time submitted for deeper analysis
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     private static final String TAG = SendFeedback.class.getSimpleName();
 
     private Button mashIt_btn, cancelIt_btn, clearIt_btn;
     private EditText inWord1, inWord2, inWord3, inWord4;
     private TextView txtDetails;
-    private DatabaseReference myStory;
+    private DatabaseReference myRiddle;
     private FirebaseDatabase myFBInstance;
     private String storyId;
     private String togglebtn;
-
-    private String hermosa; // used to display current riddle on RiddleFragment
-    private String Contact;
+    public String Correct; //used to identify the correct answer by the user
+    public Integer choice=0; // just used for TAGging
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +77,46 @@ public class SendFeedback extends AppCompatActivity {
         inWord3 = (EditText) findViewById(word3); // Riddle
         inWord2 = (EditText) findViewById(word2); // Answer 1
         inWord4 = (EditText) findViewById(word4); // Answer 2
+
+        Spinner spinner = (Spinner) findViewById(R.id.answer_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.answer_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+                Correct = parent.getItemAtPosition(pos).toString();
+                // uses string array "answer_array"
+
+                if(pos==1){
+                    Log.e(TAG, "User selected " + Correct);
+                }
+
+                if(pos==2){
+                    Log.e(TAG, "User selected " + Correct);
+
+                }
+
+                if (pos==0) {
+                    Log.e(TAG, "User selected " + Correct);
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                choice = 0;
+
+            }
+        });
+
         mashIt_btn = (Button) findViewById(R.id.mashIt);
         clearIt_btn = (Button) findViewById(R.id.clearIt);
         cancelIt_btn = (Button) findViewById(R.id.cxlIt);
@@ -80,29 +130,18 @@ public class SendFeedback extends AppCompatActivity {
                 String Riddle = inWord3.getText().toString();
                 String Answer1 = inWord2.getText().toString();
                 String Answer2 = inWord4.getText().toString();
-                hermosa = getResources().getString(R.string.hermosa);
+                //Correct = correct;
+                myRiddle = MyFirebaseUtil.getDatabase().getReference(Sender);
 
-                // If Digital Hermosa posts a message, it should be displayed in the RiddleFragment.
-                // The purpose of this was to allow an admin to update the riddle manually.
-                if (Sender.equals(hermosa)){
-                    String currentTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                    Contact = "UPDATE: " + currentTimeString; // Instead of contact info, set contact field to time entered when userName equals Sender
-                    // myStory = MyFirebaseUtil.getDatabase().getReference(Sender).child(Contact); // create separate message based on time entered?
-                    myStory = MyFirebaseUtil.getDatabase().getReference(Sender);
-                } else {
-                    Contact = inWord2.getText().toString();
-                    myStory = MyFirebaseUtil.getDatabase().getReference(Sender);
-                }
-
-                Log.e(TAG, "Firebase reference is set to " + myStory);
+                Log.e(TAG, "Firebase reference is set to " + myRiddle);
 
                 // Create a new list of items to be stored.
                 // FUTURE - allow the user to update their feedback.
                 if (TextUtils.isEmpty(togglebtn)) {
-                    createList(Sender, Contact, Riddle, Answer1, Answer2);
+                    createList(Sender, Correct, Riddle, Answer1, Answer2);
                     Log.e(TAG, "There were no words in " + storyId + ", so created a new list.");
                 } else {
-                    updateList(Sender, Contact, Riddle, Answer1, Answer2);
+                    updateList(Sender, Correct, Riddle, Answer1, Answer2);
                     Log.e(TAG, "Updated the word list for " + storyId + ".");
                 }
 
@@ -177,35 +216,45 @@ public class SendFeedback extends AppCompatActivity {
 
 
     // Creates a new list of words consisting of the riddle and potential answers back into the Firebase Database
-    private void createList(String Sender, String Contact, String Riddle, String Answer1, String Answer2) {
+    private void createList(String Sender, String Correct, String Riddle, String Answer1, String Answer2) {
 
-        Words words = new Words(Sender, Contact, Riddle, Answer1, Answer2);
+        Words words = new Words(Sender, Correct, Riddle, Answer1, Answer2);
         togglebtn = "On";
 
-        myStory.setValue(words);
+        // TODO check to make sure the user has selected a correct answer
+
+        myRiddle.setValue(words);
+
+        // Logging some Firebase Analytics
+        Bundle params = new Bundle();
+        params.putString("riddle_submitter", Sender);
+        String currentTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        params.putString("riddle_submit_time", currentTimeString);
+        mFirebaseAnalytics.logEvent("submitter_info", params);
+        // END of logging
 
         addWordChangeListener();
     }
 
     // Updates the list of words in the Firebase Database
-    private void updateList(String Sender, String Contact, String Riddle, String Answer1, String Answer2) {
+    private void updateList(String Sender, String Correct, String Riddle, String Answer1, String Answer2) {
 
         if (!TextUtils.isEmpty(Sender))
-            myStory.child("Sender").setValue(Sender);
-        if (!TextUtils.isEmpty(Contact))
-            myStory.child("Contact").setValue(Contact);
+            myRiddle.child("Sender").setValue(Sender);
+        if (!TextUtils.isEmpty(Correct))
+            myRiddle.child("Correct").setValue(Correct);
         if (!TextUtils.isEmpty(Riddle))
-            myStory.child("Riddle").setValue(Riddle);
+            myRiddle.child("Riddle").setValue(Riddle);
         if (!TextUtils.isEmpty(Answer1))
-            myStory.child("Answer1").setValue(Answer1);
+            myRiddle.child("Answer1").setValue(Answer1);
         if (!TextUtils.isEmpty(Answer2))
-            myStory.child("Answer2").setValue(Answer2);
+            myRiddle.child("Answer2").setValue(Answer2);
 
     }
 
     private void addWordChangeListener() {
         // User data change listener
-        myStory.addValueEventListener(new ValueEventListener() {
+        myRiddle.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Words words = dataSnapshot.getValue(Words.class);

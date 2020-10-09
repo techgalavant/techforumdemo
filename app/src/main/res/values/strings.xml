@@ -4,7 +4,7 @@
     <string name="title_trivia">Trivia</string>
     <string name="fragtitle_trivia">Office Trivia</string>
     <string name="fragtitle_riddle">Today\'s Riddle</string>
-    <string name="fragtitle_sponsor">Our Sponsor</string>
+    <string name="fragtitle_sponsor">Today\'s Sponsor</string>
     <string name="trivia_q">Question:</string>
     <string name="trivia_a">Answer:</string>
     <string name="trivia_next">NEXT</string>
@@ -17,13 +17,23 @@
     <string name="riddle_choice_2">Choice 2</string>
     <string name="riddle_a">Fill in response…</string>
     <string name="riddle_resp">RESPOND</string>
-    <string name="feedback_title">Submit New Riddle</string>
+    <string name="feedback_title">Submit A New Riddle</string>
     <string name="senders_name">Sender Name</string>
     <string name="senders_riddle_q">Riddle Question</string>
     <string name="senders_answer_1">Answer 1</string>
     <string name="senders_answer_2">Answer 2</string>
-    <string name="send">Send</string>
+    <string name="send">Submit</string>
     <string name="update">Update</string>
     <string name="feedback_thanks">Thank you for your submission!</string>
     <string name="feedback_chg">Change Your Riddle?</string>
+    <string name="sponsor_imag_hint">Sponsor Image</string>
+    <string name="senders_correct">Which one is the correct answer?</string>
+    <string name="answer1_text">Answer 1 is correct</string>
+    <string name="answer2_text">Answer 2 is correct</string>
+    <string name="answer_btn">Answer Button</string>
+        <string-array name="answer_array">
+            <item>Selection</item>
+            <item>Answer 1</item>
+            <item>Answer 2</item>
+        </string-array>
 </resources>

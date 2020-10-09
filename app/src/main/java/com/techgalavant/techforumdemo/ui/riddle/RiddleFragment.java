@@ -1,6 +1,17 @@
 package com.techgalavant.techforumdemo.ui.riddle;
 
-// This fragment will be used to show a riddle using In-App Messaging.
+/**
+ * Created by Mike Fallon in October 2020 for the Tech Forum demo of Google Firebase.
+ *
+ * This fragment will be used to demonstrate reading from the Google Firebase Realtime database
+ * using a riddle. Users will be able to shake their device to suggest a new riddle. If the user
+ * identifies as the 'hermosa' string value, then it will display that updated riddle on the screen.
+ *
+ * This fragment uses the Words.java constructor and the MyFirebaseUtil.java for accessing the Firebase DB.
+ *
+ */
+
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +55,7 @@ public class RiddleFragment extends Fragment {
     private TextView txtTitle, txtRiddle, tvDate, txtAns1, txtAns2;
     private EditText txtResponse;
 
-    private String hermosa; // used to display messages on WelcomeFragment
+    private String hermosa; // used to identify who can display their riddle on the fragment
 
     public RiddleFragment() {
         // Required empty public constructor
@@ -58,13 +69,11 @@ public class RiddleFragment extends Fragment {
         riddleViewModel =
                 ViewModelProviders.of(this).get(RiddleViewModel.class);
         View root = inflater.inflate(R.layout.fragment_riddle, container, false);
+
         // Show a friendly message about the screen's purpose
         txtTitle = (TextView) root.findViewById(R.id.title_riddle);
 
-        // Show a friendly date and time to the user
-        // tvDate = (TextView) root.findViewById(R.id.appdate); // Shows the time for the most recent message
-        //final TextView txtRiddle = (TextView) root.findViewById(R.id.riddle); // Show the current riddle
-        //final  TextView txtResponse = (EditText) root.findViewById(R.id.riddle_response);
+        // dupe??
         final TextView textView = root.findViewById(R.id.title_riddle);
         riddleViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -73,7 +82,7 @@ public class RiddleFragment extends Fragment {
             }
         });
 
-        // Used to retrieve welcome messages in the Firebase DB
+        // Used to retrieve the current riddle in the Firebase DB if they provide the 'hermosa' string as their name
         hermosa = getResources().getString(R.string.hermosa);
         DatabaseReference myRef = MyFirebaseUtil.getDatabase().getReference(hermosa); // see MyFirebaseUtil.class
         DatabaseReference myRiddle = myRef.child("Riddle");
@@ -81,13 +90,9 @@ public class RiddleFragment extends Fragment {
         DatabaseReference myAnswer2 = myRef.child("Answer2");
         DatabaseReference mesgTime = myRef.child("Contact");
 
-        // Show a friendly message about the screen's purpose
-        //txtTitle = (TextView) root.findViewById(R.id.title_riddle);
-
-        // Show a friendly date and time to the user
-        //tvDate = (TextView) root.findViewById(R.id.appdate); // Shows the time for the most recent message
-
-        txtRiddle = (TextView) root.findViewById(R.id.riddle); // Show the current riddle
+        // Setup the Riddle and potential answers
+        // TODO setup the answers as buttons which the user can select.
+        txtRiddle = (TextView) root.findViewById(R.id.riddle);
         txtAns1 = (TextView) root.findViewById(R.id.ans1);
         txtAns2 = (TextView) root.findViewById(R.id.ans2);
         txtResponse = (EditText) root.findViewById(R.id.riddle_response);
@@ -105,7 +110,6 @@ public class RiddleFragment extends Fragment {
                 String updatetime = dataSnapshot.child("Contact").getValue(String.class);  // "Contact" is actually the time that the update was provided - see SendFeedback if userName equals...
                 String updatemesg = dataSnapshot.child("Feedback").getValue(String.class); // "Feedback" is converted to message if userName.equals ...
 
-                //tvDate.setText(updatetime); // provide the update time
                 txtRiddle.setText(updateriddle); // provide the current riddle
                 txtAns1.setText(updateanswer1); // provide answer 1
                 txtAns2.setText(updateanswer2); // provide answer 2

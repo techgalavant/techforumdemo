@@ -2,7 +2,7 @@
 <!-- START xml_defaults -->
 <defaultsMap>
     <entry>
-        <key>sponsor</key>
+        <key>new_sponsor</key>
         <value>https://www.ecspan.com/techforumdemo/homesite_sp.png</value>
     </entry>
 

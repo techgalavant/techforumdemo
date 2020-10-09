@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.trivia.TriviaFragment">
+        tools:context=".ui.trivia.RiddleFragment">
 
         <TextView
             android:id="@+id/title_riddle"
