@@ -15,13 +15,12 @@ import android.hardware.SensorManager;
 public class ShakeDetector implements SensorEventListener {
 
     /*
-     * The gForce that is necessary to register as shake.
-     * Must be greater than 1G (one earth gravity unit).
-     * You can install "G-Force", by Blake La Pierre
-     * from the Google Play Store and run it to see how
-     *  many G's it takes to register a shake
+     * The gForce is necessary to register as shake.
+     * It must be greater than 1G (one earth gravity unit).
+     * You can install a G-Force meter from Google Play Store
+     *  to adjust the threshold_gravity
      */
-    private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
+    private static final float SHAKE_THRESHOLD_GRAVITY = 1.7F;
     private static final int SHAKE_SLOP_TIME_MS = 500;
     private static final int SHAKE_COUNT_RESET_TIME_MS = 3000;
 

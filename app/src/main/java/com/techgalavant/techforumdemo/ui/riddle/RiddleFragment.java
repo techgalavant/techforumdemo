@@ -48,8 +48,6 @@ public class RiddleFragment extends Fragment {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
 
-    // TODO Setup logEvent() to log Riddle actions into Google Firebase Analytics.
-
     private static final String TAG = RiddleFragment.class.getSimpleName();
 
     private TextView txtTitle, txtRiddle, tvDate, txtAns1, txtAns2;
@@ -85,10 +83,10 @@ public class RiddleFragment extends Fragment {
         // Used to retrieve the current riddle in the Firebase DB if they provide the 'hermosa' string as their name
         hermosa = getResources().getString(R.string.hermosa);
         DatabaseReference myRef = MyFirebaseUtil.getDatabase().getReference(hermosa); // see MyFirebaseUtil.class
-        DatabaseReference myRiddle = myRef.child("Riddle");
+        final DatabaseReference myRiddle = myRef.child("Riddle");
         DatabaseReference myAnswer1 = myRef.child("Answer1");
         DatabaseReference myAnswer2 = myRef.child("Answer2");
-        DatabaseReference mesgTime = myRef.child("Contact");
+        DatabaseReference corrAns = myRef.child("Correct");
 
         // Setup the Riddle and potential answers
         // TODO setup the answers as buttons which the user can select.
@@ -102,19 +100,33 @@ public class RiddleFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                String name = getResources().getString(R.string.fragtitle_riddle);
+                String id = getResources().getString(R.string.title_riddle);
+
                 // This method will read from the Firebase DB and present it as a riddle
                 // whenever data changes.
                 String updateriddle = dataSnapshot.child("Riddle").getValue(String.class);
                 String updateanswer1 = "Answer 1 = "+dataSnapshot.child("Answer1").getValue(String.class);
                 String updateanswer2 = "Answer 2 = "+dataSnapshot.child("Answer2").getValue(String.class);
-                String updatetime = dataSnapshot.child("Contact").getValue(String.class);  // "Contact" is actually the time that the update was provided - see SendFeedback if userName equals...
-                String updatemesg = dataSnapshot.child("Feedback").getValue(String.class); // "Feedback" is converted to message if userName.equals ...
+                String updatecorrectans = dataSnapshot.child("Correct").getValue(String.class);
+                String updatesender = dataSnapshot.child("Sender").getValue(String.class);
 
                 txtRiddle.setText(updateriddle); // provide the current riddle
                 txtAns1.setText(updateanswer1); // provide answer 1
                 txtAns2.setText(updateanswer2); // provide answer 2
 
-                Log.e(TAG, "Update time = " + updatetime + " and Update Mesg = " + updatemesg);
+                Log.e(TAG, "Sender was " + updatesender);
+
+                // Log some information in the Firebase Analytics on this fragment
+                Bundle params = new Bundle();
+                params.putString("title_frag", id);
+                params.putString("frag_title", name);
+                params.putString("riddle_question", updateriddle);
+                params.putString("riddle_answer1", updateanswer1);
+                params.putString("riddle_answer2", updateanswer2);
+                params.putString("correct_answer", updatecorrectans);
+                mFirebaseAnalytics.logEvent("frag_info", params);
+                // END of logging
 
             }
 

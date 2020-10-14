@@ -51,6 +51,7 @@ public class SendFeedback extends AppCompatActivity {
 
     // used for logging events in Google Analytics - send the submitter's name and time submitted for deeper analysis
     private FirebaseAnalytics mFirebaseAnalytics;
+    int count;
 
     private static final String TAG = SendFeedback.class.getSimpleName();
 
@@ -58,21 +59,20 @@ public class SendFeedback extends AppCompatActivity {
     private EditText inWord1, inWord2, inWord3, inWord4;
     private TextView txtDetails;
     private DatabaseReference myRiddle;
-    private FirebaseDatabase myFBInstance;
-    private String storyId;
     private String togglebtn;
     public String Correct; //used to identify the correct answer by the user
     public Integer choice=0; // just used for TAGging
+    String name = "Feedback";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feedback_hints);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         txtDetails = (TextView) findViewById(R.id.textView2);
 
-        // EditTexts in feedback_hints.xml use TextInputLayout to animate the hint texts.
-        // The TextInputLayout wraps around each EditText in the layout file.
         inWord1 = (EditText) findViewById(word1); // Sender's name
         inWord3 = (EditText) findViewById(word3); // Riddle
         inWord2 = (EditText) findViewById(word2); // Answer 1
@@ -104,6 +104,7 @@ public class SendFeedback extends AppCompatActivity {
                 }
 
                 if (pos==0) {
+                    Correct = "";
                     Log.e(TAG, "User selected " + Correct);
 
                 }
@@ -130,7 +131,6 @@ public class SendFeedback extends AppCompatActivity {
                 String Riddle = inWord3.getText().toString();
                 String Answer1 = inWord2.getText().toString();
                 String Answer2 = inWord4.getText().toString();
-                //Correct = correct;
                 myRiddle = MyFirebaseUtil.getDatabase().getReference(Sender);
 
                 Log.e(TAG, "Firebase reference is set to " + myRiddle);
@@ -139,10 +139,15 @@ public class SendFeedback extends AppCompatActivity {
                 // FUTURE - allow the user to update their feedback.
                 if (TextUtils.isEmpty(togglebtn)) {
                     createList(Sender, Correct, Riddle, Answer1, Answer2);
-                    Log.e(TAG, "There were no words in " + storyId + ", so created a new list.");
-                } else {
+                    Log.e(TAG, "No words found so created a new list.");
+                }
+                // TODO check to make sure the user has selected a correct answer
+                // if (!TextUtils.isEmpty(Correct)) {
+                //    Toast.makeText(getApplicationContext(), "Please pick a correct answer!", Toast.LENGTH_LONG).show();
+                // }
+                else {
                     updateList(Sender, Correct, Riddle, Answer1, Answer2);
-                    Log.e(TAG, "Updated the word list for " + storyId + ".");
+                    Log.e(TAG, "Updated the list of words.");
                 }
 
                 // Launch an AlertDialog box to post a confirmation message
@@ -194,6 +199,25 @@ public class SendFeedback extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Log.e(TAG, "User elected to cancel.");
+                if(count < 1)
+                {
+                    count = 1;
+
+                }
+                else
+                {
+                    count = count+1;
+
+                }
+                Log.e(TAG, String.valueOf(count));
+
+                // If the user cancelled submitting a new riddle, log this event in Firebase Analytics
+                Bundle params = new Bundle();
+                params.putString("dialog_screen", name);
+                params.putString("cancel_send_counter", String.valueOf(count));
+                mFirebaseAnalytics.logEvent("screen_info", params);
+                // END of logging
+
                 Intent intent = new Intent(SendFeedback.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -220,8 +244,6 @@ public class SendFeedback extends AppCompatActivity {
 
         Words words = new Words(Sender, Correct, Riddle, Answer1, Answer2);
         togglebtn = "On";
-
-        // TODO check to make sure the user has selected a correct answer
 
         myRiddle.setValue(words);
 

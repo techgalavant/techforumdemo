@@ -41,8 +41,6 @@ public class SponsorFragment extends Fragment {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
     }
 
-    // TODO Setup logEvent() to log Sponsor actions into Google Firebase Analytics.
-
     private static final String TAG = SponsorFragment.class.getSimpleName();
 
     private TextView txtTitle, txtSponsor;
@@ -91,6 +89,7 @@ public class SponsorFragment extends Fragment {
      */
     private void fetchSponsor() {
 
+
         // [START fetching remote config and populate the imageView]
         mRemoteConfig.fetchAndActivate()
                 .addOnCompleteListener(new OnCompleteListener<Boolean>() {
@@ -102,8 +101,9 @@ public class SponsorFragment extends Fragment {
 
                             String imgUrl = mRemoteConfig.getString("new_sponsor");
                             Log.i(TAG,"Remote Config imgUrl is "+imgUrl);
-                            Toast.makeText(getActivity(), "Successfully fetched remote config "+imgUrl,
-                                    Toast.LENGTH_SHORT).show();
+
+                            //Toast.makeText(getActivity(), "Successfully fetched remote config "+imgUrl,
+                            //        Toast.LENGTH_SHORT).show();
 
                         } else {
                             Log.e(TAG,"fetchRemoteConfigs UNSUCCESSFUL");
@@ -123,9 +123,20 @@ public class SponsorFragment extends Fragment {
                         } else {
                             Toast.makeText(getActivity(), "new_sponsor value was found",
                                     Toast.LENGTH_SHORT).show();
-                            Picasso.get().load(imgUrl).into(imgSponsor);  // Resource info here https://square.github.io/picasso/
-                            // TODO set resize image to fit correctly into the imageView on SponsorFragment
+                            Picasso.get().load(imgUrl).resize(700,500).into(imgSponsor);
+                            // See https://square.github.io/picasso/ on all capabilities including auto-resizing the image
                         }
+
+                        // Log the sponsor_url in Firebase Analytics to demonstrate logging value.
+                        Bundle params = new Bundle();
+                        String name = getResources().getString(R.string.fragtitle_riddle);
+                        String id = getResources().getString(R.string.title_riddle);
+
+                        params.putString("title_frag", id);
+                        params.putString("frag_title", name);
+                        params.putString("sponsor_url", imgUrl);
+                        mFirebaseAnalytics.logEvent("frag_info", params);
+                        // End logging in Firebase
 
                     }
                 });  // [END fetchAndActivate]

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAnalytics mFirebaseAnalytics;  // used for logging events in Google Analytics
+    String name = "Main Activity";
 
     // The following are used for the shake detection
     private SensorManager mSensorManager;
@@ -66,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        // TODO Setup logEvent() to log MainActivity actions into Google Firebase Analytics.
-
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -118,6 +117,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // Close the AlertDialog box
                         Log.e(TAG, "User selected NO on SendFeedback AlertDialog");
+                        String cancel = "Yes";
+
+                        // If the user accidentally shook their device and hit cancel, log this event in Firebase Analytics.
+                        Bundle params = new Bundle();
+                        params.putString("dialog_screen", name);
+                        params.putString("shake_cancel_action", cancel);
+                        mFirebaseAnalytics.logEvent("activity_info", params);
+                        // End logging in Firebase
+
                         dialog.cancel();
                     }
                 });
